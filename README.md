@@ -21,7 +21,8 @@ As there are several files, you can work in groupe (2 personnes) to achieve the 
 You can try to run the code to see if it can print something.
 
 To compile to code, you need gcc compile 
+
 	g++ main.cpp pcg.cpp -o a.out
 
-To execute 
+To execute
 	./a.out

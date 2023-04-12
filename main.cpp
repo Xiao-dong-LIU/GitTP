@@ -1,5 +1,5 @@
 #include "pcg.h"
-
+#include "cg.h"
 
 int main() 
 {
@@ -22,10 +22,11 @@ int main()
 
     // Call the PCG solver function with a maximum of 1000 iterations and a tolerance of 1e-6
     vector<double> x = pcg_solver(A, b, x0, 1000, 1e-6);
+ //   conjugateGradient(A,b,x0,1000, 1e-6);
     // output in the solution in screen 
-//    for (int i = 0; i < x.size(); ++i) {
-//        cout << "x[" << i << "] = " << x[i] << endl;
-//    }
+    for (int i = 0; i < x.size(); ++i) {
+        cout << "x[" << i << "] = " << x[i] << endl;
+    }
     
     return 0;
 }

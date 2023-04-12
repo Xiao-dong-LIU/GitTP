@@ -18,9 +18,10 @@ using namespace std;
 /// @brief pcg solvor 
 /// @param A stiffness matrix
 /// @param b right hand vector
+/// @param x0 initial geuss 
 /// @param max_iter NB of max iterations
 /// @param tol convergence criteria 
-/// @return 
+/// @return result
 vector<double> pcg_solver(const vector<vector<double>>& A, const vector<double>& b, const vector<double>& x0, int max_iter, double tol);
 
 

@@ -13,6 +13,51 @@
 #include "cg.h"
 #include <cassert>
 
+
+
+
+vector<double> PCG(vector<vector<double>>& A, vector<double>& b, vector<double>& x0, int maxIter, double tol) {
+    int n = b.size();
+    std::vector<std::vector<double>> M = icPreconditioner(A);
+    vector<double> x = x0;
+    vector<double> r = b - matVec(A, x);
+    vector<double> z = precond(M,r);
+    vector<double> p = z;
+    double alpha, beta, rz_new, rz_old = dotProduct(r, z);
+    for (int iter = 0; iter < maxIter; iter++) {
+        vector<double> Ap = matVec(A, p);
+        alpha = rz_old / dotProduct(p, Ap);
+        for (int i = 0; i < n; i++) {
+            x[i] += alpha * p[i];
+            r[i] -= alpha * Ap[i];
+        }
+         double residualError = sqrt(dotProduct(r, r));
+        if (residualError < tol) 
+        {
+    //        cout << "Preconditioned Conjugate Gradient converged in " << iter+1 << " iterations." << " with a residual "<<residualError <<endl;
+            break;
+        }
+        z = precond(M,r); // Preconditioning step (z = M^-1 * r)
+        rz_new = dotProduct(r, z);
+
+        beta = rz_new / rz_old;
+        for (int i = 0; i < n; i++) {
+            p[i] = z[i] + beta * p[i];
+        }
+        rz_old = rz_new;
+        if(iter == maxIter - 1) {
+    //        cout << "Conjugate Gradient did not converge within " << maxIter << " iterations." << " with a residual "<<sqrt(dotProduct(r, r)) << endl;
+        }
+    }
+    return x;
+}
+
+
+
+
+
+
+
 std::vector<double> operator-(const std::vector<double>& a, const std::vector<double>& b) {
     assert(a.size() == b.size());  // Ensure vectors are of the same size
     std::vector<double> result(a.size());
@@ -68,39 +113,4 @@ std::vector<double> precond(const std::vector<std::vector<double>>& M, const std
 }
 
 
-vector<double> PCG(vector<vector<double>>& A, vector<double>& b, vector<double>& x0, int maxIter, double tol) {
-    int n = b.size();
-    std::vector<std::vector<double>> M = icPreconditioner(A);
-    vector<double> x = x0;
-    vector<double> r = b - matVec(A, x);
-    vector<double> z = precond(M,r);
-    vector<double> p = z;
-    double alpha, beta, rz_new, rz_old = dotProduct(r, z);
-    for (int iter = 0; iter < maxIter; iter++) {
-        vector<double> Ap = matVec(A, p);
-        alpha = rz_old / dotProduct(p, Ap);
-        for (int i = 0; i < n; i++) {
-            x[i] += alpha * p[i];
-            r[i] -= alpha * Ap[i];
-        }
-         double residualError = sqrt(dotProduct(r, r));
-         cout << "i = " << iter+1 << " R = " <<residualError <<endl;
-        if (residualError < tol) 
-        {
-            cout << "Preconditioned Conjugate Gradient converged in " << iter+1 << " iterations." << " with a residual "<<residualError <<endl;
-            break;
-        }
-        z = precond(M,r); // Preconditioning step (z = M^-1 * r)
-        rz_new = dotProduct(r, z);
 
-        beta = rz_new / rz_old;
-        for (int i = 0; i < n; i++) {
-            p[i] = z[i] + beta * p[i];
-        }
-        rz_old = rz_new;
-        if(iter == maxIter - 1) {
-            cout << "Conjugate Gradient did not converge within " << maxIter << " iterations." << " with a residual "<<sqrt(dotProduct(r, r)) << endl;
-        }
-    }
-    return x;
-}

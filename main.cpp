@@ -27,7 +27,7 @@ int main()
     // Call the PCG solver function with a maximum of 1000 iterations and a tolerance of 1e-6
     vector<double> x = PCG(A, b, x0, maxiter, tol);
      // Call the CG solver function with a maximum of 1000 iterations and a tolerance of 1e-6
-//    vector<double> x = conjugateGradient(A,b,x0,maxiter, tol);
+    vector<double> x = conjugateGradient(A,b,x0,maxiter, tol);
     // output in the solution in screen 
     for (int i = 0; i < x.size(); ++i) {
         cout << "x[" << i << "] = " << x[i] << endl;

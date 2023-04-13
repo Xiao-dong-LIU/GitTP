@@ -12,17 +12,22 @@ As there are several files, you can work in groupe (2 personnes) to achieve the 
 
 3. After that, each teammate will do a "git clone" to get the private repository to his local repository after done a "git init" in his local repository.
 
-4. Dev A removes the comments in pcg.cpp file to enable print; Dev B removes the comments in main.cpp to enable print.
+4. Dev A removes the comments in pcg.cpp file to enable print ("//" before the "cout"); Dev B removes the comments in cg.cpp to enable print.
 
-5. Each Dev commits their modifications 
+5. Each Dev commits their modifications. 
 
-6. Publish the new code to your remote repository.
+6. Publish the new code to remote repository.
 
-You can try to run the code to see if it can print something.
+7. Update the local repository. 
 
+8. Dev A tests the output of pcg by adding the "//" in main before the cg solver, Dev B does the same thing but disable pcg solver. 
+
+9. Publish the new code to remote. 
+
+If you like : 
 To compile to code, you need gcc compile 
 
-	g++ main.cpp pcg.cpp -o a.out
+	g++ *cpp -o a.out
 
 To execute
 	./a.out

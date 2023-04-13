@@ -19,10 +19,12 @@ using namespace std;
 /// @param A stiffness matrix
 /// @param b right hand vector
 /// @param x0 initial geuss 
-/// @param max_iter NB of max iterations
+/// @param maxIter NB of max iterations
 /// @param tol convergence criteria 
 /// @return result
-vector<double> pcg_solver(const vector<vector<double>>& A, const vector<double>& b, const vector<double>& x0, int max_iter, double tol);
-
-
+vector<double> PCG(vector<vector<double>>& A, vector<double>& b, vector<double>& x0, int maxIter, double tol);
+vector<double> matVec(vector<vector<double>>& A, vector<double>& x) ;
+std::vector<double> operator-(const std::vector<double>& a, const std::vector<double>& b);
+std::vector<double> precond(const std::vector<std::vector<double>>& M, const std::vector<double>& r);
+std::vector<std::vector<double>> icPreconditioner(const std::vector<std::vector<double>>& A) ;
 #endif

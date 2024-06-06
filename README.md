@@ -79,3 +79,18 @@ git merge uncommentStep3
 11. ***Dev.A*** publishes it to remote.
 
 > Here ***Dev.A*** has to handle the conflicts when merge "CG" to main. You can choose either PCG or CG. 
+
+## 6. Manage remote
+1. ***Dev.B*** creates an annotated tag named "V1.0"
+```
+git tag -a v1.0 -m "version 1.0"
+```
+2. ***Dev.B*** publishes this tag to remote
+```
+git push origin v1.0 
+```
+3. Check tag in remote
+4. ***Dev.A*** fetches this tag to his local and check it on gitk
+5. ***Dev.A*** creates a private empty project in Koda.
+6. ***Dev.A*** creates also a private empty project in Koda.
+7. Both publish their project to Koda. 

@@ -94,3 +94,37 @@ git push origin v1.0
 5. ***Dev.A*** creates a private empty project in Koda.
 6. ***Dev.A*** creates also a private empty project in Koda.
 7. Both publish their project to Koda. 
+
+## Checkout from a specific commit 
+1. Both do a checkout from your first commit obtained in section "Commit and push" and give a name to this branch "addContent"
+```
+git checkout -b addContent Hash (Hash: commit ID)
+```
+2. Both uncomment "Step 7", and commit this modifications. 
+```
+git commit -a -m "uncomment Step 7"
+```
+3. ***Dev.A*** adds the following line before "Step 1" in "main.cpp" and commit it
+```
+std::cout<<"This is a iterative solvor to solve Ax=b"<<endl;
+```
+```
+git commit -a -m "add solvor description"
+```
+4. ***Dev.B*** adds the following line before ```return 0``` in "main.cpp"
+```
+std::cout<<"Problem solved!"<<endl;
+```
+```
+git commit -a -m "add end line"
+```
+5. Both delete the line ```/*******Step 1 ********/``` 
+6. Both try to merge the fastest commit to main. 
+```
+git checkout main
+```
+```
+git cherry-pick hash
+```
+Both do a ```git pull``` than ```git push```. 
+> You may need ```git stash``` to switch to branch main

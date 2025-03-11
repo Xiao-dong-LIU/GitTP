@@ -1,7 +1,7 @@
 # A small project to practice git 
-In this exercise, you’ll work with a Python script (main.py), uncomment sections step-by-step by removing "#" before the line, commit changes, and run the script to see the output. The project runs in GitHub Codespaces and focuses on Git essentials with immediate feedback.
+In this exercise, you’ll work with a Python script (`TP.py`), uncomment sections step-by-step by removing `#` before each line, commit changes, and run the script to see the output. The project runs in GitHub Codespaces and focuses on Git essentials with immediate feedback. The script starts empty and grows as you uncomment sections—perfect for learning Git workflows collaboratively.
 
-As there are several files, you can work in groupe (2 personnes) to achieve the efficiency. 
+Work in pairs (***Dev.A*** and ***Dev.B***) to achieve efficiency.
 ## 0. Initial Setup
 Before diving into Git operations, configure your Git environment in Codespaces.
 ### SSH Key configuration
@@ -32,7 +32,7 @@ Before diving into Git operations, configure your Git environment in Codespaces.
     ssh -T git@github.com
     ```
 ### Local configurations
-- Add your name and your email
+- Set your name and email
 ```bash
 git config --global user.name "John Doe"
 git config --global user.email johndoe@example.com
@@ -57,120 +57,220 @@ git config --global mergetool.vscode.cmd "code --wait --merge \$REMOTE \$LOCAL \
 git config --global alias.st status
 git config --global alias.ci commit
 git config --global alias.br branch
-git config --global alias.loggraph ‘log --all --decorate --oneline --graph’
-git config --global alias.log1 ‘log --oneline’
+git config --global alias.loggraph "log --all --decorate --oneline --graph"
+git config --global alias.log1 "log --oneline"
 ```
-> These shorten ```git status``` to ```git st```, ```git commit``` to ```git ci```,```git branch``` to ```git br``` and so on.
+> These shorten ```git status``` to ```git st```, ```git commit``` to ```git ci```,```git branch``` to ```git br``` and add visual logs with ```git loggraph``` and ```git log1```
 - Verify your settings
 ```bash
 git config --global --list
 ```
 ## 1. Fork the project
-You do not have write permission on this project, you will hence need to fork it. Of course, since ***Dev.A*** and ***Dev.B*** will be collaborating to the same project, only one of them should create the fork for the group.
+You don’t have write access to this repo, so fork it. Only one fork per pair!
 
-***Dev.B***: Fork the project by clicking on the fork button in the upper right corner of the project page.
+- ***Dev.B***: Fork the project by clicking on the fork button in the upper right corner of the project page.
 
-Now ***Dev.B*** has his own copy of the project. In order to give ***Dev.A*** write permissions to the project,
-***Dev.B*** needs to add ***Dev.A*** to the project’s list of collaborators: *Settings -> Collaborators*.
+- Now ***Dev.B*** has his own copy of the project. In order to give ***Dev.A*** write permissions to the project,
+- ***Dev.B*** needs to add ***Dev.A*** to the project’s list of collaborators: *Settings -> Collaborators*.
 
 ## 2. Clone the repository
-Both ***Dev.A*** and ***Dev.B*** clone it and then go to the local repository 
-```
+In this part, ***Dev.B*** does the same thing as ***Dev.A***
+- clone the remote to local and then go to the local repository 
+```bash
+git clone YourRemoteRepository
 cd GitTP
 ```
-Both open gitk to visualize the workflow
+- Visualize the workflow:
+```bash
+git loggraph
 ```
-gitk --all &
+or by "Graph"
+- Test the initial (empty) script:
+```bash
+python TP.py
 ```
-gitk should be updated after each git command to check the changes.
+> No output yet, since everything is commented out.
 ## 3. Commit and push
-In this part, ***Dev.B*** does the same thing as ***Dev.A***, but in *Step 2*
-1. ***Dev.A*** delete "/*" and "*/" in *Step 1* in file *main.cpp*, check the change with 
+- ***Both*** check the status of this git repository
 ```
 git statut
 ```
-2. ***Dev.A*** stage the modifications (check gitk)
+- ***Both*** Uncomment Step 1 (the "Welcome..." line), save and run it.
+```bash
+git statut
+python TP.py
 ```
-git add main.cpp
+- ***Both*** stage the modifications (check graph)
+```bash
+git add TP.py
 ```
-3. ***Dev.A*** commit this modifications 
+- ***Both*** commit this modifications 
+```bash
+git commit -m "uncomment Step 1 for A and uncomment Step 2 for B"
 ```
-git commit -m "uncomment Step 1"
-```
-check gitk
+check graph
 
-4. ***Dev.A*** push this commit
-```
+- ***Both*** push this commit
+```bash
 git push
 ```
-> One of the teammate will find that it is not possible to push the modifications. Try to figure it out. 
+> One of the teammates will find that it is not possible to push the modifications. Try to figure it out. 
 
-> Tips: The teammate push after the first need to do ```git pull``` before the ```git push```
+> Tips: The teammate pushed after the first need to do ```git pull``` before the ```git push```
 
-5. Try to get the same output for gitk when finished. 
+- Try to get the same output for graph when finished. 
 
 ## 4. Branch and merge
-In this part, ***Dev.B*** does the same thing as ***Dev.A***, but in *Step 4*
-1. ***Dev.A*** creates a branch "uncommentStep3" ("uncommentStep4" for ***Dev.B***)
-2. Checkout to the new branch, and check it to make sure
-```
-git branch
-```
-3. ***Dev.A*** deletes comments of *Step 3*
-4. Commit the modifications and merge it to main branch
-```
-git checkout main
-git merge uncommentStep3
-```
-5. push it to remote and try to get the same workflow one gitk 
+- ***Dev.A***:
+  - Create and checkout branch:
+    ```bash
+    git checkout -b Step2
+    ```
+  - Verify 
+    ```bash
+    git branch
+    ```
+  - Uncomment Step 2 (remove # from "def subtract..." and "print..."), save and run it.
+  - Commit it 
+    ```bash
+    git add TP.py
+    git ci -m "uncomment Step 2"
+    ```
+  - Create a new file ***dev_A_tools.py***:
+  - Copy and paste this content into ***dev_A_tools.py***
+   ```python
+        # dev_A_tools.py
+        def greet(name):
+        return f"Hello, {name}!"
+   ```
+   - Update ***TP.py*** to use the function.
+   - After Step 2, add:
+   ```python
+        from dev_A_tools import greet
+        print(greet("Dev.A"))
+   ```
+  - Save and run.
+  - Stage and commit
+    ```bash
+    git add TP.py dev_A_tools.py
+    git ci -m "add greet function in dev_A_tools.py"
+    ```
+  - Merge to main and publish it
+    ```bash
+    git checkout main
+    git pull
+    git merge Step2
+    git push
+    ```
+> Do not forget to check often with status and graph 
+- ***Dev.B***:
+  - Create and checkout branch:
+    ```bash
+    git checkout -b Step3
+    ```
+  - Verify 
+    ```bash
+    git branch
+    ```
+  - Uncomment Step 3, save and run it.
+  - Commit it 
+    ```bash
+    git add TP.py
+    git ci -m "uncomment Step 3"
+    ```
+  - Create a new file ***dev_B_tools.py***:
+  - Copy and paste this content into ***dev_B_tools.py***
+   ```python
+        # dev_B_tools.py
+        def square(number):
+        return number * number
+   ```
+   - Update ***TP.py*** to use the function.
+   - After Step 2, add:
+   ```python
+        from dev_B_tools import greet
+        print("Square of 4:", square(4))
+   ```
+  - Save and run.
+  - Stage and commit
+    ```bash
+    git add TP.py dev_B_tools.py
+    git ci -m "add square function in dev_B_tools.py"
+    ```
+  - Merge to main and publish it
+    ```bash
+    git checkout main
+    git pull
+    git merge uncommentStep3
+    git push
+    ```
+- ***Both*** try to get the same workflow on graph 
 
 ## 5. Manage conflicts 
-1. ***Dev.B*** creates a new branch "PCG".
-2. ***Dev.B*** uncomments *Step 6.1* and **delete** *Step 6.2*.
-3. ***Dev.B*** commits this modification and merge it main. 
-4. ***Dev.B*** publishes it to remote.
-5. ***Dev.A*** creates a new branch "CG".
-6. ***Dev.A*** uncomments *Step 6.2* and **delete** *Step 6.1*.
-7. ***Dev.A*** commits this modification.
-8. ***Dev.A*** checkout to main.
-9. ***Dev.A*** does a git pull to update his local main branch
-10. ***Dev.A*** merge branch "CG" to main.  
-11. ***Dev.A*** publishes it to remote.
+- ***Dev.B***
+    - create a new branch "uncommentStep4".
+    - uncomment "Step 4", save and run it.
+    - commit this modification and merge it to main branch. 
+    - publish it to remote.
+- ***Dev.A***
+    - create a new branch "changeStep4".
+    - uncomment "Step 4" and **change** the output from "Great job completing the steps!" to "Congratulations!"
+    - Save and run it.
+    - commit these modifications.
+    - checkout to main.
+    - do a ```git pull``` to update local main branch
+    - merge branch "changeStep4" to main.  
+    - publish it to remote.
+    - Resolve conflict:
+    ```bash
+    git mergetool
+    ```
 
-> Here ***Dev.A*** has to handle the conflicts when merge "CG" to main. You can choose either PCG or CG. 
+> Here ***Dev.A*** has to handle the conflicts when merge "changeStep4" to main.  
 
 ## 6. Manage remote
-1. ***Dev.B*** creates an annotated tag named "V1.0"
-```
-git tag -a v1.0 -m "version 1.0"
-```
-2. ***Dev.B*** publishes this tag to remote
-```
-git push origin v1.0 
-```
-3. Check tag in remote
-4. ***Dev.A*** fetches this tag to his local and check it on gitk
-5. ***Dev.A*** creates a private empty project in Koda.
-6. ***Dev.A*** creates also a private empty project in Koda.
-7. Both publish their project to Koda. 
+- ***Dev.B***
+    - create an annotated tag named "V1.0"
+        ```bash
+        git tag -a v1.0 -m "version 1.0"
+        ```
+    - publish this tag to remote
+        ```bash
+        git push origin v1.0 
+        ```
+    - Check tag in remote
+- ***Dev.A*** 
+    - fetche this tag to his local and check it on graph
+- ***Both***
+    - create a private empty project in Koda.
+    - publish the project to Koda. 
 
 ## Checkout from a specific commit 
-1. Both do a checkout from your first commit obtained in section "Commit and push" and give a name to this branch "addContent"
-```
-git checkout -b addContent Hash (Hash: commit ID)
-```
+- ***Both***
+    - Find first commit hash:
+    ```bash
+    git log1
+    ```
+    - do a checkout from your first commit obtained in section "Commit and push" and give a name to this branch "addContent"
+    ```bash
+    git checkout -b addContent Hash (Hash: commit ID)
+    ```
+    - Chech files that you have in your repository 
+    ```bash
+    ls 
+    ```
 2. Both uncomment "Step 7", and commit this modifications. 
 ```
 git commit -a -m "uncomment Step 7"
 ```
-3. ***Dev.A*** adds the following line before "Step 1" in "main.cpp" and commit it
+3. ***Dev.A*** adds the following line before "Step 1" in "TP.py" and commit it
 ```
 std::cout<<"This is a iterative solvor to solve Ax=b"<<endl;
 ```
 ```
 git commit -a -m "add solvor description"
 ```
-4. ***Dev.B*** adds the following line before ```return 0``` in "main.cpp"
+4. ***Dev.B*** adds the following line before ```return 0``` in "TP.py"
 ```
 std::cout<<"Problem solved!"<<endl;
 ```

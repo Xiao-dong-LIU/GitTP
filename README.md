@@ -273,6 +273,7 @@ In this part, you’ll check out an earlier commit, fix a bug in a new branch, a
     git pull
     git cherry-pick <fix-hash>
     ```
+<!-- 
 2. Both uncomment "Step 7", and commit this modifications. 
 ```
 git commit -a -m "uncomment Step 7"
@@ -300,4 +301,4 @@ git checkout main
 git cherry-pick hash
 ```
 Both do a ```git pull``` than ```git push```. 
-> You may need ```git stash``` to switch to branch main
+> You may need ```git stash``` to switch to branch main -->

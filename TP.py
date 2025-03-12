@@ -3,7 +3,7 @@
 
 # Step 2: A simple calculation
 # def subtract(a, b):
-#     return a - b
+#     return a + b
 # print("5 - 2 =", subtract(5, 2))
 
 # Step 3: Random fun

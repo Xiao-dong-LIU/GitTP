@@ -41,7 +41,7 @@ git config --global user.email johndoe@example.com
 ```bash
 git config --global core.editor "code --wait"
 ```
-> The ```--wait``` flag ensures Git waits for VS Code to close before proceeding.
+> The `--wait` flag ensures Git waits for VS Code to close before proceeding.
 - Configure difftool to use VS Code
 ```bash
 git config --global diff.tool vscode
@@ -60,7 +60,7 @@ git config --global alias.br branch
 git config --global alias.loggraph "log --all --decorate --oneline --graph"
 git config --global alias.log1 "log --oneline"
 ```
-> These shorten ```git status``` to ```git st```, ```git commit``` to ```git ci```,```git branch``` to ```git br``` and add visual logs with ```git loggraph``` and ```git log1```
+> These shorten `git status` to `git st`, `git commit` to `git ci`,`git branch` to `git br` and add visual logs with `git loggraph` and `git log1`
 - Verify your settings
 ```bash
 git config --global --list
@@ -116,7 +116,7 @@ git push
 ```
 > One of the teammates will find that it is not possible to push the modifications. Try to figure it out. 
 
-> Tips: The teammate pushed after the first need to do ```git pull``` before the ```git push```
+> Tips: The teammate pushed after the first need to do `git pull` before the `git push`
 
 - Try to get the same output for graph when finished. 
 
@@ -218,7 +218,7 @@ git push
     - Save and run it.
     - commit these modifications.
     - checkout to main.
-    - do a ```git pull``` to update local main branch
+    - do a `git pull` to update local main branch
     - merge branch "changeStep4" to main.  
     - publish it to remote.
     - Resolve conflict:
@@ -245,19 +245,33 @@ git push
     - create a private empty project in Koda.
     - publish the project to Koda. 
 
-## Checkout from a specific commit 
+## Fix a Bug and Cherry-Pick
+In this part, you’ll check out an earlier commit, fix a bug in a new branch, and use `git cherry-pick` to apply the fix to `main`. This simulates fixing a mistake from the past and bringing the solution forward without merging an entire branch.
 - ***Both***
-    - Find first commit hash:
+    - Look for a commit like "uncomment Step 2"
     ```bash
     git log1
     ```
-    - do a checkout from your first commit obtained in section "Commit and push" and give a name to this branch "addContent"
+    - Checkout that commit into a new branch:
     ```bash
-    git checkout -b addContent Hash (Hash: commit ID)
+    git checkout -b fix-subtract-bug Hash (Hash: commit ID)
     ```
-    - Chech files that you have in your repository 
+    - Check files that you have in your repository 
     ```bash
     ls 
+    ```
+    - change `return a + b` in the `Step 2` of `TP.py` to `return a - b`
+    - save and run it
+    - commit it if it is right
+    ```bash
+    git add TP.py
+    git ci -m "fix subtract bug: change + to -"
+    ```
+    - Merge this ***commit*** to `main` branch
+    ```bash
+    git checkout main
+    git pull
+    git cherry-pick <fix-hash>
     ```
 2. Both uncomment "Step 7", and commit this modifications. 
 ```
@@ -270,7 +284,7 @@ std::cout<<"This is a iterative solvor to solve Ax=b"<<endl;
 ```
 git commit -a -m "add solvor description"
 ```
-4. ***Dev.B*** adds the following line before ```return 0``` in "TP.py"
+4. ***Dev.B*** adds the following line before `return 0` in "TP.py"
 ```
 std::cout<<"Problem solved!"<<endl;
 ```

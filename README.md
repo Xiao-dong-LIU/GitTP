@@ -273,32 +273,147 @@ In this part, you’ll check out an earlier commit, fix a bug in a new branch, a
     git pull
     git cherry-pick <fix-hash>
     ```
-<!-- 
-2. Both uncomment "Step 7", and commit this modifications. 
+# Advanced Git Operations
+In this section, you’ll explore advanced Git commands to modify your commit history: amending a commit, rebasing interactively to edit or squash commits, and changing old commit content. These skills help you refine your project history before sharing it.
+
+## Amend a Commit
+Imagine you forgot to add *Step 5* to your last commit—use `git commit --amend` to fix it.
+  - Checkout `main` and ensure it’s up-to-date
+  - Uncomment Step 5 in TP.py
+  - Stage and commit
+  - Realize you forgot a description—amend it
+ 	- Add a comment above Step 5
+	```python
+	# Step 5: Multiplication (multiply two numbers)
+	```
+	- Stage the change
+	- Amend the last commit
+## Interactive Rebase
+### Edit an Old Commit
+Let’s fix a typo in an earlier commit message from Section 3 (e.g., "uncomment Step 1" → "Uncomment Step 1").
+- Start an interactive rebase from the commit before Section 3
+- Find the commit before "uncomment Step 1", then
+```bash
+git rebase -i <hash-before>
 ```
-git commit -a -m "uncomment Step 7"
+- In the editor, change pick to edit for the "uncomment Step 1" commit, save, and exit.
+- Git pauses at that commit. Edit the message
+- Continue the rebase
+```bash
+git rebase --continue
 ```
-3. ***Dev.A*** adds the following line before "Step 1" in "TP.py" and commit it
+- Visualize with graph
+### Squash Commits
+Combine your two commits from Section 4 (e.g., uncommenting and adding a function) into one.
+- Start rebase from before Section 4
+- Change `pick` to `squash` (or s) for the second commit (e.g., "add greet function..."), save, and exit.
+- Edit the combined commit message
+```text
+Uncomment Step 2 and add greet function
 ```
-std::cout<<"This is a iterative solvor to solve Ax=b"<<endl;
+- Save and exit
+- Visualize with graph
+
+### Edit Old Commit Content
+Fix a typo in Step 3’s output from Section 4 (e.g., "Lucky number" → "Your lucky number").
+- Rebase to edit the Step 3 commit
+- Set `pick` to `edit` for "uncomment Step 3", save, and exit
+- Modify TP.py
+- Stage and amend
+- Continue 
+## Stash Uncommitted Changes
+In this section, you’ll use `git stash` to save uncommitted changes, switch tasks, and apply them later. Imagine you’re working on *Step 7* but need to fix something in `main`—stash lets you pause without committing.
+- Checkout `main`
+- Uncomment Step 7 in `TP.py`
+- Make a mistake—add a typo
+```python
+print("Sum of list:", sum(numbrs))  # Typo: numbrs instead of numbers
 ```
+- Stage it
+- Before committing, you’re interrupted—stash it
+```bash
+git stash push -m "working on Step 7 with typo"
 ```
-git commit -a -m "add solvor description"
+- Verify it’s clean
+- checkout to a new branch `ChangecommentinStep1`
+```python
+# Step 1: Basic output (welcome message)
+print("Welcome to the Git exercise!")
 ```
-4. ***Dev.B*** adds the following line before `return 0` in "TP.py"
+instead of
+```python
+# Step 1: Basic output
+print("Welcome to the Git exercise!")
 ```
-std::cout<<"Problem solved!"<<endl;
+- Commit it.
+- Go back to `main` and list you stashes
+- Apply your stashed changes
+- Fix the typo
+- Commit it
+- List your stashes and remove useless ones 
+- Merge `ChangecommentinStep1` to `main`
+> Stash is great for quick pauses, but it’s a single stack—multiple stashes can get messy. Use `git stash list` to see saved stashes and `git stash apply <stash-id>` to apply specific ones without popping.
+## Work with Git Worktrees
+In this section, you’ll use `git worktree` to work on multiple branches at the same time in separate folders, without needing multiple clones. This is great for testing changes or developing features in parallel. You’ll create a worktree to test *Step 6* (user input) while keeping `main` intact.
+### Create a Worktree
+- Ensure you’re on `main`
+- Create a worktree for the `Step6` branch (assume it doesn’t exist yet)
+```bash
+git worktree add ../step6-worktree -b Step6
 ```
-```
-git commit -a -m "add end line"
-```
-5. Both delete the line ```/*******Step 1 ********/``` 
-6. Both try to merge the fastest commit to main. 
-```
-git checkout main
-```
-```
-git cherry-pick hash
-```
-Both do a ```git pull``` than ```git push```. 
-> You may need ```git stash``` to switch to branch main -->
+> This creates a new branch `Step6` and a folder `../step6-worktree` with its contents.
+- Navigate to the worktree
+- Uncomment Step 6 in `TP.py` and run it
+> Enter a name in the terminal to see the output (e.g., "Hello, Dev.A").
+- Commit
+### Compare with Main
+- Go back to the main directory (GitTP)
+- Check `TP.py—Step 6` is still commented out here.
+- Run it
+> No input prompt, since `main` doesn’t have Step 6 yet.
+- List worktrees
+- Compare with `git difftool`
+### Merge the Worktree Branch
+- Go to the main directory
+- Merge `Step6` to `main` branch
+- run the code
+### Clean Up
+- Remove the worktree and Verify
+- Delete the branch `Step6`
+> Worktrees let you experiment without disrupting your main workspace—ideal for testing features like `Step 6’s` input while keeping main stable. Use them when you need to juggle multiple tasks!
+
+## Experiment with Git Reset
+In this section, you’ll use `git reset` to rewind history in a branch, go back to the first commit, and then reset to a later commit—exploring how Git preserves commits even after a reset.
+
+### Reset to the First Commit
+- Create a new branch from `main`:
+    ```bash
+    git checkout -b reset-experiment
+	```
+- Find the first commit
+	```bash
+    git log --oneline --all
+	```
+- Reset to it
+- Check history
+> Only the first commit remains in `reset-experiment`
+### Explore Reflog and Reset Forward
+- In `reset-experiment`, view recent HEAD movements
+	```bash
+    git reflog
+	```
+- Find a later commit (e.g., "uncomment Step 3", hash<later-hash>).
+- Reset to it with option `hard`
+- Check history
+> ####  Reset Insight #### 
+> Reset moves your branch pointer, but commits aren’t lost—they’re in `reflog` for **30 days**. You can reset to any commit you know the hash for, even after rewinding to the first commit!
+## Experiment with Git Revert
+In this section, you’ll use `git revert` to undo a previous commit safely, keeping the history intact—unlike `reset`, which rewrites it. You’ll revert the bug fix in `Fix a Bug and Cherry-Pick`, then revert that revert to restore it.
+- Find the cherry-pick commit
+- Revert it
+> Editor opens—keep the default message (e.g., "Revert 'fix subtract bug...'") or edit it, then save and exit.
+- Run the code (bug returns)
+### Revert the Revert
+- Find the revert commit 
+- Revert the revert
+- Run the code (fix restored)
